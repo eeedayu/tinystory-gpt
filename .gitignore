@@ -13,4 +13,5 @@ wheels/
 
 artifacts/
 runs/
+data/
 my_project.egg-info/
