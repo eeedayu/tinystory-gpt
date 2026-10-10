@@ -1,0 +1,41 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "127.0.0.1:8000:8000"
+    read_only: true
+    tmpfs:
+      - /tmp
+    mem_limit: 4g
+    cpus: 2
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+
+  vllm:
+    profiles: ["vllm"]
+    image: vllm/vllm-openai:v0.31.0
+    command:
+      - --model
+      - /models/tiny-story-gpt
+      - --served-model-name
+      - tiny-story-gpt
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+      - --dtype
+      - half
+      - --max-model-len
+      - "256"
+      - --gpu-memory-utilization
+      - "${VLLM_GPU_MEMORY_UTILIZATION:-0.70}"
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./artifacts/final:/models/tiny-story-gpt:ro
+    gpus: all
+    ipc: host
+    restart: unless-stopped

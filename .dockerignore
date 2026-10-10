@@ -1,0 +1,14 @@
+.git
+.venv
+.venv-*
+__pycache__
+*.py[cod]
+*.egg-info
+artifacts/checkpoints
+artifacts/tokenized
+artifacts/tokenizer
+artifacts/eval
+data
+.pytest_cache
+.mypy_cache
+.ruff_cache
